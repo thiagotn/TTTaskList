@@ -10,10 +10,12 @@ import UIKit
 
 import CoreData
 
-class TaskListTableViewController: UITableViewController {
+class TaskListTableViewController: UITableViewController, NSFetchedResultsControllerDelegate {
 
     var managedObjectContext: NSManagedObjectContext?
-    
+
+    var fetchedResultController: NSFetchedResultsController = NSFetchedResultsController()
+   
     @IBAction func newTask(sender: UIBarButtonItem) {
         self.performSegueWithIdentifier("segueTask", sender: sender)
     }
@@ -22,6 +24,8 @@ class TaskListTableViewController: UITableViewController {
         super.viewDidLoad()
 
         self.setupCoreDataStack()
+    
+        self.getFetchResultController()
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -39,23 +43,27 @@ class TaskListTableViewController: UITableViewController {
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
+        if let cont = self.fetchedResultController.fetchedObjects?.count {
+            return cont
+        }
         return 0
     }
 
-    /*
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath)
 
         // Configure the cell...
+        let cell = tableView.dequeueReusableCellWithIdentifier("CellID", forIndexPath: indexPath)
+    
+        let task: Task = self.fetchedResultController.objectAtIndexPath(indexPath) as! Task
+        cell.textLabel?.text = task.nome!
 
         return cell
     }
-    */
 
     /*
     // Override to support conditional editing of the table view.
@@ -95,6 +103,10 @@ class TaskListTableViewController: UITableViewController {
 
     // MARK: - Navigation
 
+    func controllerDidChangeContent(controller: NSFetchedResultsController!) {
+        tableView.reloadData()
+    }
+    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
@@ -139,5 +151,27 @@ class TaskListTableViewController: UITableViewController {
         
         managedObjectContext!.persistentStoreCoordinator = coordinator
         
+    }
+
+    func getFetchResultController() {
+        // Primeiro inicilizamos um FetchRequest com dados da tabela Task
+        let fetchRequest = NSFetchRequest(entityName: "Task")
+    
+        // Definimos que o campo usado para ordenação será "nome"
+        let sortDescriptor = NSSortDescriptor(key: "nome", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+    
+        // Iniciamos a propriedade fetchedResultController com uma instância de NSFetchedResultsController com o FetchRequest acima definido e sem opções de Cache
+        self.fetchedResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedObjectContext!, sectionNameKeyPath: nil, cacheName: nil)
+    
+        // A controller será o delegate do fetch
+        self.fetchedResultController.delegate = self
+
+        // Executa o Fecth
+        do {
+            try self.fetchedResultController.performFetch()
+        } catch {
+            print("Erro ao executar o fetch")
+        }
     }
 }
