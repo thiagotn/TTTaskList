@@ -5,7 +5,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <scenes>
-        <!--Task List Table View Controller-->
+        <!--Lista de Tarefas-->
         <scene sceneID="aUe-ri-y7c">
             <objects>
                 <tableViewController id="mA2-gk-q1x" customClass="TaskListTableViewController" customModule="TTTaskList" customModuleProvider="target" sceneMemberID="viewController">
@@ -28,12 +28,57 @@
                             <outlet property="delegate" destination="mA2-gk-q1x" id="B03-m4-px6"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="yS5-h4-f52"/>
+                    <navigationItem key="navigationItem" title="Lista de Tarefas" id="yS5-h4-f52">
+                        <barButtonItem key="rightBarButtonItem" title="Adicionar" id="nqQ-7t-SyL">
+                            <connections>
+                                <action selector="newTask:" destination="mA2-gk-q1x" id="hBR-Lk-OYd"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+                    <connections>
+                        <segue destination="Wvl-bG-DHI" kind="show" identifier="segueTask" id="dJU-KC-Lja"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ubx-VP-Fd8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="791" y="392"/>
+        </scene>
+        <!--Tarefa-->
+        <scene sceneID="kTi-8j-YXN">
+            <objects>
+                <viewController id="Wvl-bG-DHI" customClass="TaskDetailViewController" customModule="TTTaskList" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="UjL-LI-ax7"/>
+                        <viewControllerLayoutGuide type="bottom" id="3hD-mx-Oa3"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="MFX-tu-xDc">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ok7-XL-58D">
+                                <rect key="frame" x="39" y="98" width="248" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Tarefa" id="i4A-jD-ob7">
+                        <barButtonItem key="rightBarButtonItem" title="Salvar" id="cpO-zg-UBz">
+                            <connections>
+                                <action selector="addTask:" destination="Wvl-bG-DHI" id="p10-ot-DqH"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+                    <connections>
+                        <outlet property="txtDesc" destination="ok7-XL-58D" id="Rig-21-y1u"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="92v-cZ-ULZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1279" y="392"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="0SN-YB-uaU">

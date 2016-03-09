@@ -14,6 +14,10 @@ class TaskListTableViewController: UITableViewController {
 
     var managedObjectContext: NSManagedObjectContext?
     
+    @IBAction func newTask(sender: UIBarButtonItem) {
+        self.performSegueWithIdentifier("segueTask", sender: sender)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -88,15 +92,19 @@ class TaskListTableViewController: UITableViewController {
     }
     */
 
-    /*
+
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        
+        let taskController:TaskDetailViewController = segue.destinationViewController as! TaskDetailViewController
+        
+        taskController.managedObjectContext = managedObjectContext
     }
-    */
+
     
     func setupCoreDataStack() {
         // Criacao do modelo
